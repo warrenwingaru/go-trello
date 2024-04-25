@@ -585,11 +585,13 @@ func (b *Board) GetCards(extraArgs ...Arguments) (cards []*Card, err error) {
 
 	return
 }
+
 type Filter string
+
 // GetFilteredCards takes Filter, Arguments and retrieves all Cards on a Board as slice or returns error.
 func (b *Board) GetFilteredCards(filter Filter, extraArgs ...Arguments) (cards []*Card, err error) {
 	args := flattenArguments(extraArgs)
-	path := fmt.Sprintf("boards/%s/cards/%s}", b.ID, filter)
+	path := fmt.Sprintf("boards/%s/cards/%s", b.ID, filter)
 
 	err = b.client.Get(path, args, &cards)
 
