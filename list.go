@@ -66,6 +66,17 @@ func (b *Board) GetLists(extraArgs ...Arguments) (lists []*List, err error) {
 	return
 }
 
+// GetFilteredLists takes a filter and Arguments and returns the matching list.
+func (c *Client) GetFilteredLists(filter string, extraArgs ...Arguments) (list *List, err error) {
+	args := flattenArguments(extraArgs)
+	path := fmt.Sprintf("lists/%s", filter)
+	err = c.Get(path, args, &list)
+	if list != nil {
+		list.SetClient(c)
+	}
+	return
+}
+
 // CreateList creates a list.
 // Attribute currently supported as extra argument: pos.
 // Attributes currently known to be unsupported: idListSource.
