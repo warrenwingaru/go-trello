@@ -66,13 +66,13 @@ func (b *Board) GetLists(extraArgs ...Arguments) (lists []*List, err error) {
 	return
 }
 
-// GetFilteredLists takes a filter and Arguments and returns the matching list.
-func (c *Client) GetFilteredLists(filter string, extraArgs ...Arguments) (list *List, err error) {
+// GetFilteredLists takes a filter and Arguments and returns the lists of the receiver Board.
+func (b *Board) GetFilteredLists(filter string, extraArgs ...Arguments) (lists []*List, err error) {
 	args := flattenArguments(extraArgs)
-	path := fmt.Sprintf("lists/%s", filter)
-	err = c.Get(path, args, &list)
-	if list != nil {
-		list.SetClient(c)
+	path := fmt.Sprintf("boards/%s/lists/%s", b.ID, filter)
+	err = b.client.Get(path, args, &lists)
+	for i := range lists {
+		lists[i].SetClient(b.client)
 	}
 	return
 }
